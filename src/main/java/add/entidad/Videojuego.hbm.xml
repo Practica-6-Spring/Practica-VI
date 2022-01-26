@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 24 ene. 2022 21:19:43 by Hibernate Tools 5.2.12.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="videojuegos" dynamic-insert="false" dynamic-update="false" mutable="true" name="add.entidad.Videojuego" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="videojuego">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="add.entidad.Company" embed-xml="true" fetch="select" insert="true" name="company" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="company" not-null="true"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="titulo" optimistic-lock="true" type="string" unique="false">
+            <column length="30" name="titulo" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="precio" optimistic-lock="true" type="double" unique="false">
+            <column name="precio" not-null="true" precision="22" scale="0"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="plataformas" optimistic-lock="true" sort="unsorted" table="plataformajuego">
+            <key on-delete="noaction">
+                <column name="id_videojuego" not-null="true"/>
+            </key>
+            <many-to-many embed-xml="true" entity-name="add.entidad.Plataforma" not-found="exception" unique="false">
+                <column name="id_plataforma" not-null="true"/>
+            </many-to-many>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="generos" optimistic-lock="true" sort="unsorted" table="generojuego">
+            <key on-delete="noaction">
+                <column name="id_videojuego" not-null="true"/>
+            </key>
+            <many-to-many embed-xml="true" entity-name="add.entidad.Genero" not-found="exception" unique="false">
+                <column name="id_genero" not-null="true"/>
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

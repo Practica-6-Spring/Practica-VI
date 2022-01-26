@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">elenita</property>
+        <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/videojuegos</property>
+        <property name="hibernate.connection.username">elena</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.search.autoregister_listeners">true</property>
+        <property name="hibernate.validator.apply_to_ddl">false</property>
+        <mapping class="add.entidad.Genero"/>
+        <mapping class="add.entidad.Plataforma"/>
+        <mapping class="add.entidad.Company"/>
+        <mapping class="add.entidad.Videojuego"/>
+    </session-factory>
+</hibernate-configuration>
