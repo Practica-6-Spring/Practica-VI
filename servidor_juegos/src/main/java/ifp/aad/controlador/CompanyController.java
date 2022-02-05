@@ -23,47 +23,59 @@ import ifp.aad.repositorio.RepositorioCompany;
 public class CompanyController {
 	@Autowired
 	RepositorioCompany repositorio;
-	
 
-	//GET con filtro id 
-	@GetMapping("company/{id}") // -> http://localhost:8080/company/1 los valores variables (path param, se representan con llaves)
-	public Optional<Company> obtenerCompany(@PathVariable("id") Integer id) { //el objeto opcional significa que puede devolver un valor nulo o no
+	// GET con filtro id
+	@GetMapping("company/{id}") // -> http://localhost:8080/company/1 
+	public Optional<Company> obtenerCompany(@PathVariable("id") Integer id) { 
 		return repositorio.findById(id);
 	}
-	
-	
-	//GET Masivo y búsqueda por localizacion
-	//MODIFICAR PARA QUE SEA POR JUEGOS
-	@GetMapping("companies")// -> http://localhost:8080/companies?localizacion=USA
-	public List<Company> getCompanyByLoc(@RequestParam(value = "localizacion", required = false) String nombre) { //el objeto opcional significa que puede devolver un valor nulo o no
-		
-		if ( nombre == null) {
+
+	// GET Masivo y búsqueda por localizacion
+
+	@GetMapping("companies") // -> http://localhost:8080/companies?localizacion=USA
+	public List<Company> getCompanyByLoc(@RequestParam(value = "localizacion", required = false) String nombre) { 
+
+		if (nombre == null) {
 			return repositorio.findAll();
 		} else {
-			return repositorio.findCompanyByLoc(nombre);
+			boolean existe = false;
+			List<Company> listaCompanies = repositorio.findAll();
+			for (Company company : listaCompanies) {
+				if (company.getLocalizacion().equalsIgnoreCase(nombre)) {
+
+					existe = true;
+
+				}
+
+			}
+
+			if (existe == false) {
+				return null;
+			} else {
+				return repositorio.findCompanyByLoc(nombre);
+			}
+
 		}
 	}
-	
-	
-	
-	//POST añadir nueva compañia
+
+	// POST añadir nueva compañia
 	@PostMapping("company")
 	public Integer addJuego(@RequestBody Company nuevaCompany) {
 		Company CompanyGuardada = this.repositorio.save(nuevaCompany);
 		return CompanyGuardada.getId();
 	}
-	
-	@DeleteMapping("company/{id}")
-    public ResponseEntity<ExceptionCompany> borrarCompany(@PathVariable("id") Integer idCompany) {
-        Optional<Company> companyBorrada = this.repositorio.findById(idCompany);
-        if (companyBorrada.isEmpty()) {
-            return new ResponseEntity<ExceptionCompany>(new ExceptionCompany("Error: el juego no existe", idCompany),
-                    HttpStatus.NOT_FOUND);
-        } else {
-            this.repositorio.deleteById(idCompany);
-              return new ResponseEntity<ExceptionCompany>(new ExceptionCompany("El juego se ha borrado", idCompany),
-                      HttpStatus.OK);
-        }
 
-    }
+	@DeleteMapping("company/{id}")
+	public ResponseEntity<ExceptionCompany> borrarCompany(@PathVariable("id") Integer idCompany) {
+		Optional<Company> companyBorrada = this.repositorio.findById(idCompany);
+		if (companyBorrada.isEmpty()) {
+			return new ResponseEntity<ExceptionCompany>(new ExceptionCompany("Error: La compañía no existe", idCompany),
+					HttpStatus.NOT_FOUND);
+		} else {
+			this.repositorio.deleteById(idCompany);
+			return new ResponseEntity<ExceptionCompany>(new ExceptionCompany("La compañía se ha borrado", idCompany),
+					HttpStatus.OK);
+		}
+
+	}
 }

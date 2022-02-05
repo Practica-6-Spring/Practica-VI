@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+//ACTUALIZADO DIA 05/02
 
 
 @RestController
@@ -43,12 +44,29 @@ public class JuegosController {
 	
 	//GET Masivo y filtrado por company
 	@GetMapping("juegos")// -> http://localhost:8080/juegos?Company=Nintendo
-	public List<Videojuego> getJuegoCompany(@RequestParam(value = "Company", required = false) String nombre) { //el objeto opcional significa que puede devolver un valor nulo o no
+	public List<Videojuego> getJuegoCompany(@RequestParam(value = "Company", required = false) String nombre) { 
 		
 		if ( nombre == null) {
+			
 			return repositorio.findAll();
+			
 		} else {
-			return repositorio.findByCompany(nombre);
+			boolean existe = false;
+			List<Videojuego> listVideojuegos = repositorio.findAll();
+			for (Videojuego videojuego : listVideojuegos) {
+				if (videojuego.getCompany().getNombre().equalsIgnoreCase(nombre)) {
+				
+					existe = true; 
+				
+				} 
+				
+			}
+			if (existe ==false) {
+				return null;
+			} else {
+				return repositorio.findByCompany(nombre);
+			}
+				
 		}
 	}
 	
